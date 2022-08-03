@@ -5,6 +5,7 @@
         "ecmaVersion": "latest",
         "sourceType": "module",
         "project": ["./tsconfig.json", "./packages/*/tsconfig.json"],
+        "projectFolderIgnoreList": ["**/node_modules/**"],
         "EXPERIMENTAL_useSourceOfProjectReferenceRedirect": true
     },
     "extends": ["plugin:import/typescript"],
