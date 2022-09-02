@@ -1,4 +1,4 @@
-import { NFTCardStyledAssetPlayer, ReversedAddress } from '@masknet/shared'
+import { Image, NFTCardStyledAssetPlayer, ReversedAddress } from '@masknet/shared'
 import { makeStyles } from '@masknet/theme'
 import { RSS3BaseAPI } from '@masknet/web3-providers'
 import { isSameAddress } from '@masknet/web3-shared-base'
@@ -86,10 +86,9 @@ export const FeedCard = memo(({ feed, address, onSelect }: FeedCardProps) => {
                 return (
                     <span>
                         {`${t.sent_an_NFT_to()} `}
-                        <ReversedAddress
-                            TypographyProps={{ display: 'inline' }}
-                            address={action.address_to ?? ZERO_ADDRESS}
-                        />
+                        {action.address_to ? (
+                            <ReversedAddress TypographyProps={{ display: 'inline' }} address={action.address_to} />
+                        ) : null}
                     </span>
                 )
             }
@@ -139,7 +138,7 @@ export const FeedCard = memo(({ feed, address, onSelect }: FeedCardProps) => {
             }
         }
         return isSameAddress(action.address_to, address) ? t.received() : t.sent()
-    }, [address, feed, t])
+    }, [address, feed, action, t])
 
     const logo = useMemo(() => {
         if (feed.tag === Tag.Collectible) {
@@ -164,7 +163,7 @@ export const FeedCard = memo(({ feed, address, onSelect }: FeedCardProps) => {
         if (feed.tag === Tag.Donation) {
             const action = feed.actions[0] as RSS3BaseAPI.ActionGeneric<RSS3BaseAPI.Tag.Donation>
             const logo = action.metadata?.logo
-            return logo ? <img className={classes.img} src={logo} /> : null
+            return logo ? <Image className={classes.img} src={logo} /> : null
         }
         if (feed.tag === Tag.Transaction && feed.type === Type.Transfer) {
             const action = feed.actions[0] as RSS3BaseAPI.ActionGeneric<
@@ -172,7 +171,7 @@ export const FeedCard = memo(({ feed, address, onSelect }: FeedCardProps) => {
                 RSS3BaseAPI.Type.Transfer
             >
             const logo = action.metadata?.image
-            return logo ? <img className={classes.img} src={logo} /> : null
+            return logo ? <Image className={classes.img} src={logo} /> : null
         }
         return null
     }, [feed])

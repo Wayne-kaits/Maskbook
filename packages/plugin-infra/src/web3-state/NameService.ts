@@ -70,6 +70,7 @@ export class NameServiceState<
 
     async reverse(chainId: ChainId, address: string) {
         if (!this.options.isValidAddress(address)) return
-        return this.storage.value[chainId][this.options.formatAddress(address)]
+        const ens = this.storage.value[chainId][this.options.formatAddress(address)]
+        return !ens.endsWith('.eth') ? ens : undefined
     }
 }
