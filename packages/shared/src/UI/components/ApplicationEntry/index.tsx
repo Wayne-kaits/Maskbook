@@ -40,9 +40,6 @@ const useStyles = makeStyles<{ disabled: boolean; iconFilterColor?: string }>()(
             },
             ...(iconFilterColor ? { filter: `drop-shadow(0px 6px 12px ${iconFilterColor})` } : {}),
         },
-        tooltip: {
-            backgroundColor: theme.palette.mode === 'light' ? theme.palette.common.black : theme.palette.common.white,
-        },
         tooltipHint: {
             fontSize: 14,
             color: theme.palette.mode === 'light' ? theme.palette.common.white : theme.palette.common.black,
@@ -156,7 +153,6 @@ export function ApplicationEntry(props: ApplicationEntryProps) {
                 ],
             }}
             classes={{
-                tooltip: classes.tooltip,
                 arrow: classNames(classes.arrow, recommendFeature?.isFirst ? classes.firstAreaArrow : ''),
             }}
             placement={recommendFeature ? 'bottom' : 'top'}
