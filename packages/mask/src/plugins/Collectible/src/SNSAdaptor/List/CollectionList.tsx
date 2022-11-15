@@ -45,7 +45,6 @@ export const useStyles = makeStyles<CollectibleGridProps>()((theme, { columns = 
         },
         container: {
             boxSizing: 'border-box',
-            background: theme.palette.maskColor.bottom,
             paddingTop: gapIsNumber ? theme.spacing(gap) : gap,
         },
         sidebar: {
