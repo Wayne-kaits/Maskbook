@@ -1,3 +1,4 @@
+/* cspell:disable */
 const gameTypeRegistry: Record<number, string> = {
     '1': 'Goal',
     '2': 'Corners',
