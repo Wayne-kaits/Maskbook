@@ -127,7 +127,6 @@ export function useTradeCallback(
                 },
                 {
                     chainId,
-                    overrides: { ...gasConfig },
                 },
             )
             const receipt = await connection.getTransactionReceipt(hash)
