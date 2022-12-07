@@ -2270,6 +2270,9 @@ importers:
       '@types/yargs':
         specifier: ^17.0.14
         version: 17.0.14
+      enhanced-resolve:
+        specifier: ^5.12.0
+        version: 5.12.0
       gulp-cli:
         specifier: ^2.3.0
         version: 2.3.0
@@ -14106,7 +14109,7 @@ packages:
         optional: true
     dependencies:
       '@babel/helper-define-polyfill-provider': 0.3.1
-      core-js-compat: 3.26.1
+      core-js-compat: 3.26.0
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -16369,6 +16372,7 @@ packages:
     resolution: {integrity: sha512-622/KzTudvXCDLRw70iHW4KKs1aGpcRcowGWyYJr2DEBfRrd6hNJybxSWJFuZYD4ma86xhrwDDHxmDaIq4EA8A==}
     dependencies:
       browserslist: 4.21.4
+    dev: true
 
   /core-js-pure/3.26.0:
     resolution: {integrity: sha512-LiN6fylpVBVwT8twhhluD9TzXmZQQsr2I2eIKtWNbZI1XMfBT7CV18itaN6RA7EtQd/SDdRx/wzvAShX2HvhQA==}
@@ -18177,6 +18181,14 @@ packages:
       graceful-fs: 4.2.10
       tapable: 2.2.1
 
+  /enhanced-resolve/5.12.0:
+    resolution: {integrity: sha512-QHTXI/sZQmko1cbDoNAa3mJ5qhWUUNAq3vR0/YiD379fWQrcfuoX1+HW2S0MTt7XmoPLapdaDKUtelUSPic7hQ==}
+    engines: {node: '>=10.13.0'}
+    dependencies:
+      graceful-fs: 4.2.10
+      tapable: 2.2.1
+    dev: true
+
   /enquirer/2.3.6:
     resolution: {integrity: sha512-yjNnPr315/FjS4zIsUxYguYUPP2e1NK4d7E7ZOLiyYCcbFBiTMyID+2wvm2w6+pZ/odMA7cRkjhsPbltwBOrLg==}
     engines: {node: '>=8.6'}
@@ -18307,7 +18319,7 @@ packages:
       has-property-descriptors: 1.0.0
       has-symbols: 1.0.3
       internal-slot: 1.0.3
-      is-callable: 1.2.4
+      is-callable: 1.2.7
       is-negative-zero: 2.0.2
       is-regex: 1.1.4
       is-shared-array-buffer: 1.0.2

@@ -17,6 +17,7 @@ export { buildNetlify } from './netlify/index.js'
 export { clean, help, createPackageInteractive, fixLockfile, syncDevelop, changesetRelease } from './commands/index.js'
 export { syncLanguages } from './locale-kit-next/index.js'
 export { reorderSpellcheck } from './spellcheck/index.js'
+export { analyze as analyzeStartup } from './linter/startup-performance/index.js'
 
 // Sub-projects build commands
 export { buildInjectedScript, watchInjectedScript } from './projects/injected-scripts.js'
