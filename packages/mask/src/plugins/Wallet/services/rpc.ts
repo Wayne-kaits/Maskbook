@@ -1,6 +1,6 @@
 import { first } from 'lodash-es'
-import { WalletMessages } from '@masknet/plugin-wallet'
 import type { JsonRpcPayload } from 'web3-core-helpers'
+import { WalletMessages } from '@masknet/plugin-wallet'
 import { createTransaction } from '../../../../background/database/utils/openDB.js'
 import { createWalletDBAccess } from '../database/Wallet.db.js'
 import { openPopupWindow } from '../../../../background/services/helper/index.js'
