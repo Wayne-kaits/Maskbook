@@ -1,12 +1,12 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
-import { useLocation, useWindowScroll } from 'react-use'
-import { Popper, ClickAwayListener, PopperProps, Fade } from '@mui/material'
-import type { TrendingAPI } from '@masknet/web3-providers/types'
-import { useRemoteControlledDialog } from '@masknet/shared-base-ui'
-import { PluginTraderMessages } from '../../messages.js'
-import { WalletMessages } from '../../../Wallet/messages.js'
 import { PluginTransakMessages } from '@masknet/plugin-transak'
+import { useRemoteControlledDialog } from '@masknet/shared-base-ui'
+import type { TrendingAPI } from '@masknet/web3-providers/types'
 import type { PopperUnstyledOwnProps } from '@mui/base'
+import { ClickAwayListener, Fade, Popper, PopperProps } from '@mui/material'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { useLocation, useWindowScroll } from 'react-use'
+import { WalletMessages } from '../../../Wallet/messages.js'
+import { PluginTraderMessages } from '../../messages.js'
 
 export interface TrendingPopperProps extends Omit<PopperProps, 'children' | 'open'> {
     children?: (
@@ -24,7 +24,8 @@ export function TrendingPopper({ children, ...rest }: TrendingPopperProps) {
         update(): void
     } | null>(null)
     const [active, setActive] = useState(false)
-    const [freezed, setFreezed] = useState(false) // disable any click
+    const freezedRef = useRef(false) // disable any click
+    const closeTimerRef = useRef<NodeJS.Timeout>()
     const [name, setName] = useState('')
     const [isNFTProjectPopper, setIsNFTProjectPopper] = useState(false)
     const [address, setAddress] = useState('')
@@ -33,12 +34,19 @@ export function TrendingPopper({ children, ...rest }: TrendingPopperProps) {
     const popper = useRef<HTMLDivElement | null>(null)
 
     // #region select token and provider dialog could be opened by trending view
-    const onFreezed = useCallback((ev: { open: boolean }) => setFreezed(ev.open), [])
+    const onFreezed = useCallback((ev: { open: boolean }) => {
+        freezedRef.current = ev.open
+    }, [])
     useRemoteControlledDialog(WalletMessages.events.walletStatusDialogUpdated, onFreezed)
     useRemoteControlledDialog(WalletMessages.events.selectProviderDialogUpdated, onFreezed)
     useRemoteControlledDialog(PluginTransakMessages.buyTokenDialogUpdated, onFreezed)
     useRemoteControlledDialog(PluginTraderMessages.swapSettingsUpdated, onFreezed)
     // #endregion
+
+    const closePopper = useCallback(() => {
+        if (freezedRef.current) return
+        setActive(false)
+    }, [])
 
     // #region open or close popper
     // open popper from message center
@@ -50,6 +58,7 @@ export function TrendingPopper({ children, ...rest }: TrendingPopperProps) {
             setIsNFTProjectPopper(Boolean(ev.isNFTProjectPopper))
             setAnchorEl({ getBoundingClientRect: () => ev.element!.getBoundingClientRect() })
             setActive(true)
+            clearTimeout(closeTimerRef.current)
         })
     }, [])
 
@@ -69,13 +78,30 @@ export function TrendingPopper({ children, ...rest }: TrendingPopperProps) {
     }, [popper, Math.floor(position.y / 50)])
     // #endregion
 
+    const holderRef = useRef<HTMLDivElement>(null)
+    useEffect(() => {
+        if (!holderRef.current) return
+        const holder = holderRef.current
+        const enter = () => {
+            clearTimeout(closeTimerRef.current)
+        }
+        const leave = () => {
+            closeTimerRef.current = setTimeout(() => {
+                closePopper()
+            }, 500)
+        }
+        holder.addEventListener('mouseenter', enter)
+        holder.addEventListener('mouseleave', leave)
+        return () => {
+            holder.removeEventListener('mouseenter', enter)
+            holder.removeEventListener('mouseleave', leave)
+        }
+    }, [holderRef.current])
+
     if (!type) return null
 
     return (
-        <ClickAwayListener
-            onClickAway={() => {
-                if (!freezed) setActive(false)
-            }}>
+        <ClickAwayListener onClickAway={closePopper}>
             <Popper
                 ref={popper}
                 open={active}
@@ -100,10 +126,10 @@ export function TrendingPopper({ children, ...rest }: TrendingPopperProps) {
                 {...rest}>
                 {({ TransitionProps }) => (
                     <Fade {...TransitionProps}>
-                        <div>
-                            {children?.(name, type, address, isNFTProjectPopper, () =>
-                                setTimeout(() => popperRef.current?.update(), 100),
-                            )}
+                        <div ref={holderRef}>
+                            {children?.(name, type, address, isNFTProjectPopper, () => {
+                                requestAnimationFrame(() => popperRef.current?.update())
+                            })}
                         </div>
                     </Fade>
                 )}

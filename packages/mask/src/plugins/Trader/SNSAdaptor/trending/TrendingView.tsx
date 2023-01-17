@@ -49,6 +49,7 @@ const useStyles = makeStyles<{
                           theme.palette.mode === 'dark'
                               ? 'rgba(255, 255, 255, 0.2) 0 0 15px, rgba(255, 255, 255, 0.15) 0 0 3px 1px'
                               : 'rgba(101, 119, 134, 0.2) 0 0 15px, rgba(101, 119, 134, 0.15) 0 0 3px 1px',
+                      marginBottom: 0,
                   }
                 : {
                       width: '100%',
@@ -125,7 +126,7 @@ export function TrendingView(props: TrendingViewProps) {
     const theme = useTheme()
     const isMinimalMode = useIsMinimalMode(PluginID.Trader)
     const isWeb3ProfileMinimalMode = useIsMinimalMode(PluginID.Web3Profile)
-    const { chainId, networkType } = useChainContext<NetworkPluginID.PLUGIN_EVM>()
+    const { chainId } = useChainContext<NetworkPluginID.PLUGIN_EVM>()
     const chainIdValid = useChainIdValid(NetworkPluginID.PLUGIN_EVM, chainId)
 
     const site = getSiteType()

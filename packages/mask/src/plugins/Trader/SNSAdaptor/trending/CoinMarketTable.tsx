@@ -33,11 +33,6 @@ const useStyles = makeStyles()((theme) => ({
     label: {
         fontSize: 14,
     },
-    gridContainer: {
-        display: 'grid',
-        gridTemplateColumns: 'repeat(4, 1fr)',
-        gap: '12px',
-    },
     gridItem: {
         display: 'flex',
         width: 132.5,
@@ -148,7 +143,7 @@ export function NonFungibleCoinMarketTable(props: CoinMarketTableProps) {
     const ChainIcon = () => <WalletIcon mainIcon={chain?.icon} size={14} />
     return (
         <Stack>
-            <Grid spacing={4} className={classes.gridContainer}>
+            <Grid container columns={4} gap={1.5}>
                 <Grid item className={classes.gridItem}>
                     <Typography color="textSecondary" variant="body2" className={classes.gridItemTitle}>
                         {t('plugin_trader_total_assets')}
